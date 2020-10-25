@@ -86,7 +86,7 @@ function userDownloadMenu()
 
     while : ; do
         echo " "
-        wget --no-check-certificate -q "http://www.younow.com/php/api/broadcast/info/user=${user_name}" -O "./_temp/${user_name}.json"
+        wget --no-check-certificate -q "http://api.younow.com/php/api/broadcast/info/user=${user_name}" -O "./_temp/${user_name}.json"
 
         local user_id=`xidel -q ./_temp/${user_name}.json -e '$json("userId")'`
         local error=`xidel -q ./_temp/${user_name}.json -e '$json("errorCode")'`
@@ -173,7 +173,7 @@ function downloadPreviousBroadcastsMenu()
 
     while [ "$ex" == "false" ]
     do
-        wget --no-check-certificate -q "http://www.younow.com/php/api/post/getBroadcasts/startFrom=$startTime/channelId=${user_id}" -O "./_temp/${user_name}_json.json"
+        wget --no-check-certificate -q "http://api.younow.com/php/api/post/getBroadcasts/startFrom=$startTime/channelId=${user_id}" -O "./_temp/${user_name}_json.json"
         xidel -q -e '($json).posts().media.broadcast/join((videoAvailable,broadcastId,broadcastLengthMin,ddateAired),"-")' "./_temp/${user_name}_json.json" > "./_temp/${user_name}_list.txt"
         if [  -f "./_temp/${user_name}_list.txt" ]
         then
@@ -269,8 +269,8 @@ function downloadVideo()
     mkdir -p "./_temp/${dirr}"
     mkdir -p "./videos/${user_name}"
 
-    wget --no-check-certificate -q "http://www.younow.com/php/api/younow/user" -O "./_temp/${dirr}/session.json"
-    wget --no-check-certificate -q "http://www.younow.com/php/api/broadcast/videoPath/broadcastId=${broadcast_id}" -O "./_temp/${dirr}/rtmp.json"
+    wget --no-check-certificate -q "http://api.younow.com/php/api/younow/user" -O "./_temp/${dirr}/session.json"
+    wget --no-check-certificate -q "http://api.younow.com/php/api/broadcast/videoPath/broadcastId=${broadcast_id}" -O "./_temp/${dirr}/rtmp.json"
     
     local session=`xidel -q ./_temp/${dirr}/rtmp.json -e '$json("session")'`
     local server=`xidel -q ./_temp/${dirr}/rtmp.json -e '$json("server")'`
